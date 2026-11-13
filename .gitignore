@@ -1,0 +1,16 @@
+# Build / PyInstaller
+src/build/
+src/dist/
+src/*.spec
+__pycache__/
+*.pyc
+
+# Donnees volumineuses (non distribuees)
+WorldCover/
+*.rar
+*.zip
+
+# Fichiers locaux
+desktop.ini
+parametres.json
+rapport_courbes.txt
