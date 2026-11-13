@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="Carte AE" width="160">
+</p>
+
 # Carte AE : convertisseur de cartes Condor
 
 Programme : `Carte_AE.exe`, version **2.11** (12/11/2026)
