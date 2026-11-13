@@ -4,7 +4,7 @@
 
 # Carte AE : convertisseur de cartes Condor
 
-Programme : `Carte_AE.exe`, version **2.11** (12/11/2026)
+Programme : `Carte_AE.exe`, version **2.11** (13/11/2026)
 
 Outil Windows qui transforme les paysages **Condor 3** (`.trn` / `.raw`) en cartes BMP 32 bits : teinte d'altitude, ombrage, courbes de niveau, mer, lacs, rivières, routes, zones urbaines, noms de villes et légende « By Dicxit(AE) ».
 
