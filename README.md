@@ -1,116 +1,111 @@
-# Convertisseur de carte AE
+# Carte AE : convertisseur de cartes Condor
 
-Outil Windows qui transforme les paysages Condor (`.trn` / `.raw`) en cartes BMP 32 bits :
-courbes de niveau, teinte d'altitude, ombrage, mer, lacs, rivières, routes, zones urbaines,
-noms de villes et légende « By Dicxit(AE) ».
+Programme : `Carte_AE.exe`, version **2.11** (12/11/2026)
 
-Version de référence : **2.11** (12/11/2026) (`VERSION` dans `src/Carte_courbes_gui.pyw`).
+Outil Windows qui transforme les paysages **Condor 3** (`.trn` / `.raw`) en cartes BMP 32 bits : teinte d'altitude, ombrage, courbes de niveau, mer, lacs, rivières, routes, zones urbaines, noms de villes et légende « By Dicxit(AE) ».
 
-## Contenu du projet
+- [Tutoriel d'installation (FR)](Installation_FR.pdf) · [Installation tutorial (EN)](Installation_EN.pdf)
 
-| Fichier | Rôle |
-|---|---|
-| `Carte_AE.exe` | Application prête à l'emploi (double-clic). |
-| `src/Carte_courbes_gui.pyw` | Interface graphique (tkinter). |
-| `src/carte_courbes.py` | Moteur de rendu : lecture, relief, courbes, rivières, routes, villes, légende. |
-| `src/worldcover.py` | Lacs, mer et zones urbaines à partir d'ESA WorldCover. |
-| `src/osm_routes.py` | Routes et cours d'eau OpenStreetMap, convertis en `.npz`. |
-| `src/Carte_courbes.bat` | Lancement en ligne de commande (choix du `.raw` puis du BMP). |
-| `src/carte_courbes.ico` | Icône de l'application. |
-| `style_AE.json` | Style AE (vert, modèle AA3_AE). |
-| `style_DGT.json` | Style DGT (couleurs claires, zones urbaines orange). |
+---
 
-## Utilisation
+## 1. Ce qu'il vous faut
 
-1. Lancer `Carte_AE.exe`.
-2. Choisir le paysage (`.trn` ou copie `.raw`) et le style (AE ou DGT).
-3. Régler la qualité (Normale, Haute, Maximale), les rivières et lacs, les noms de villes.
-4. Cliquer sur **Créer la carte**.
+- Un PC **Windows** (10 ou 11).
+- Le dossier du programme, contenant :
+  - `Carte_AE.exe` : le programme ;
+  - `style_AE.json`, `style_AEb.json`, `style_DGT.json` : les styles de couleurs ;
+  - `Installation_FR.pdf` / `Installation_EN.pdf` : tutoriels.
+- Un paysage **Condor 3** installé (fichiers `.trn`, dossier `Landscapes`).
 
-Le fichier créé s'appelle `<paysage>_AE.bmp` avec le style AE, `<paysage>_DGT.bmp` avec le style DGT,
-et il est placé à côté du `.trn`.
+**Vous n'avez pas besoin d'installer Python** : le programme est un exécutable autonome.
 
-Quand on change de style, le suffixe du nom de la carte (`_AE`, `_AEb`, `_DGT`) est remplacé
-automatiquement dans le champ « Carte BMP à créer ». Le dossier et le nom de base ne changent pas.
+---
 
-Noms de villes : ils viennent du fichier `.cup` du paysage (à côté du `.trn`, ou dans
-`D:\Condor3\Landscapes\<nom>\`). Sans `.cup`, la carte est faite sans noms de villes.
+## 2. Installation rapide
 
-Lacs : ils viennent des tuiles WorldCover de `D:\Condor3\WorldCover`. Sans tuile couvrant la zone,
-la détection se fait par le relief, qui trouve moins de lacs.
+1. Copiez le dossier du programme dans un emplacement avec droits d'écriture (ex. `C:\Carte_AE\`).
+2. Gardez les fichiers `style_*.json` **à côté** de l'exécutable.
+3. Double-cliquez sur `Carte_AE.exe`.
 
-**Tout traiter** recherche automatiquement le dossier `Landscapes` sur les disques, puis parcourt
-tous les fichiers `.trn` trouvés sous ce dossier. Un message d'avertissement rappelle que le traitement
-peut prendre du temps selon la puissance de l'ordinateur avant de lancer. Les cartes existantes sont
-écrasées. Le bouton **Stop** arrête le lot ; un rapport (`rapport_courbes.txt`) est écrit à la fin.
+> **Évitez** `C:\Program Files\` : le programme écrit ses réglages et ses rapports à côté de lui.
 
-## Données nécessaires
+> **SmartScreen** : si Windows affiche « Windows a protégé votre PC », cliquez sur **Informations complémentaires** puis **Exécuter quand même** (programme non signé).
 
-Les données ne sont pas incluses dans le projet. Sans elles, le rendu reste possible mais incomplet.
+Au premier lancement, le programme crée à côté de lui `parametres.json` (réglages) et, après un lot, `rapport_courbes.txt`.
 
-| Dossier | Contenu | Utilité |
+---
+
+## 3. Utilisation
+
+1. **Fichier TRN / RAW** : choisissez le fichier `.trn` du paysage (par défaut le programme propose `D:\Condor3\Landscapes\`).
+2. **Carte BMP à créer** : le nom se remplit automatiquement (`<paysage>_AE.bmp` ou `_DGT.bmp`) à côté du `.trn`.
+3. **Style** : AE (vert) ou DGT (couleurs claires, villes en orange). Le suffixe du nom s'adapte au style.
+4. Réglez courbes (ex. 500 / 250 m), rivières & lacs, noms de villes, qualité.
+5. Cliquez sur **Créer la carte**. La carte est enregistrée à côté du `.trn`.
+
+Noms de villes : lus depuis le fichier `.cup` du paysage (à côté du `.trn` ou dans le dossier du paysage). Sans `.cup`, la carte est créée sans noms de villes.
+
+---
+
+## 4. Tout traiter
+
+La fonction **« Tout traiter »** :
+- recherche automatiquement le dossier **`Landscapes`** sur les disques de l’ordinateur ;
+- trouve et traite **tous les fichiers `.trn`** présents sous ce dossier (un par un) ;
+- affiche un **message d’avertissement** (FR/EN) rappelant que le traitement peut prendre du temps selon la puissance de l’ordinateur — il faut valider pour continuer.
+
+Les cartes existantes sont écrasées. Le bouton **Stop** arrête le lot et un rapport `rapport_courbes.txt` est écrit à la fin.
+
+---
+
+## 5. Données facultatives
+
+Les données ci-dessous ne sont pas incluses. Sans elles, le rendu reste possible mais incomplet.
+
+| Dossier | Contenu | Ce qu'il ajoute |
 |---|---|---|
-| `D:\Condor3\WorldCover` | Tuiles ESA WorldCover 2021 (`*.tif`) | Lacs, mer, zones urbaines |
-| `D:\Condor3\OSM` | `routes_<paysage>.json` et `eau_<paysage>.json` | Routes, rivières |
-| `D:\Condor3\Landscapes` | Paysages `.trn` et `.cup` | Source des cartes et des noms de villes |
+| `Landscapes` (détecté automatiquement pour « Tout traiter ») | Paysages `.trn` et `.cup` | Source des cartes et des noms de villes. |
+| `D:\Condor3\WorldCover` (facultatif) | Tuiles ESA WorldCover 2021 (`*.tif`) | Lacs, mer, zones urbaines réelles. |
+| `D:\Condor3\OSM` (facultatif) | `routes_<paysage>.json`, `eau_<paysage>.json` | Routes et rivières. |
 
-Les chemins OSM/WorldCover sont fixés dans `src/carte_courbes.py` (`DOSSIER`), `src/worldcover.py` (`DOSSIER`)
-et `src/osm_routes.py` (`DOSSIER`). Pour **Tout traiter**, le dossier des paysages (`Landscapes`)
-est désormais recherché automatiquement sur les disques.
+> Sans les dossiers facultatifs, le programme fonctionne, mais sans ces détails.
 
-## Réglages des styles
+---
 
-Les styles sont des fichiers JSON à côté de l'exécutable. Quelques clés utiles :
+## 6. Mise à jour et désinstallation
 
-- `courbes.couleur_maitresse`, `courbes.facteur_inter` : couleur et intensité des courbes.
-- `saturation` : < 1 adoucit les couleurs.
-- `nettete` : netteté après sur-échantillonnage.
-- `urbain.couleur`, `urbain.opacite` : couleur des zones urbaines.
+- **Mise à jour** : remplacez `Carte_AE.exe` par la nouvelle version. Conservez vos `parametres.json` et `style_*.json` personnalisés.
+- **Désinstallation** : supprimez le dossier du programme. Les cartes déjà créées (à côté des paysages Condor) ne sont pas supprimées.
 
-Dans `src/carte_courbes.py`, plusieurs seuils se règlent par constantes :
+---
 
-- `URBAIN_SURFACE_MIN` : taille minimale d'une zone urbaine (cellules de 90 m).
-- `URBAIN_FLOU` : flou des bords des zones urbaines.
-- `COURBES_LISSAGE`, `RUGOSITE_MIN`, `RUGOSITE_MAX` : lissage des courbes dans les zones plates.
+## 7. Avertissement (non-responsabilité)
 
-## Reconstruire l'exécutable
+- Le programme est fourni **« tel quel »**, sans garantie d'aucune sorte. L'auteur ne peut être tenu responsable des dommages, pertes de données ou erreurs de navigation liés à son usage.
+- **Les cartes ne sont pas des documents de navigation.** Elles ne remplacent ni une carte officielle, ni une carte aéronautique, ni les instruments de bord.
+- Le programme **lit** les fichiers Condor et **crée** des fichiers BMP. Il ne modifie pas les paysages.
+- Outil personnel, **non affilié, ni approuvé, ni soutenu** par les créateurs du simulateur Condor.
 
-Depuis le dossier `src` (PyInstaller requis) :
+---
+
+## 8. Copyright et crédits
+
+- Programme : © Dicxit (AE), v2.11. Tous droits réservés sauf mention contraire.
+- Condor est un simulateur de vol à voile ; son nom et ses fichiers appartiennent à leurs auteurs respectifs.
+- Données OpenStreetMap : © contributeurs OpenStreetMap, licence ODbL.
+- Données ESA WorldCover 2021 : © ESA WorldCover project, licence CC BY 4.0.
+- Le texte « By Dicxit(AE) » imprimé sur les cartes est un crédit : ne pas le retirer en cas de diffusion.
+
+---
+
+## Pour les développeurs
+
+- **Sources** : `src/Carte_courbes_gui.pyw` (GUI), `src/carte_courbes.py` (moteur), `src/worldcover.py`, `src/osm_routes.py`.
+- **Dépendances** (exécution depuis les sources) : Python 3, `numpy`, `scipy`, `Pillow`, `ijson` (voir `requirements.txt`).
+- **Reconstruction de l’exécutable** (depuis `src/`, PyInstaller requis) :
 
 ```bash
 pyinstaller --noconfirm --onefile --windowed --name Carte_AE --icon carte_courbes.ico --add-data "../style_AE.json;." --add-data "carte_courbes.ico;." --add-data "../Installation_FR.pdf;." --add-data "../Installation_EN.pdf;." --hidden-import scipy.ndimage --exclude-module matplotlib --exclude-module rasterio Carte_courbes_gui.pyw
 ```
 
-Copier ensuite `dist/Carte_AE.exe` à la racine du projet. Les fichiers `style_*.json` doivent rester
-à côté de l'exécutable pour être proposés dans la liste des styles.
-
-## Dépendances (exécution depuis les sources)
-
-Python 3 avec `numpy`, `scipy`, `Pillow`, `ijson` (et `rasterio` pour préparer WorldCover).
-Voir `requirements.txt`.
-
-## Organisation du dossier de travail
-
-- `src/` : code source (à modifier ici).
-- `style_AE.json`, `style_AEb.json` (variante), `style_DGT.json` : styles.
-- `tests/Lancer_test.bat` : lancement de test.
-- `exemples/` : `parametres.json` et `rapport_courbes.txt` (réglages et rapport d'exécution).
-- `historique/` : anciennes versions (`v1.41_precedent/` : `carte_courbes.py` et `style_AE.json` d'avant la fusion).
-
-Les données volumineuses (OSM ~3 Go) restent dans `D:\Condor3`.
-
-WorldCover : les tuiles 2021 v200 (`*_Map.tif`) sont dans `WorldCover\` (ce projet). Pour chaque
-tuile, les grilles `*_eau.npy` (lacs et mer) et `*_bati.npy` (zones urbaines) sont créées à côté
-(`worldcover.preparer_tuiles`). Si une tuile manque ici, l'outil cherche dans `D:\Condor3\WorldCover`.
-La zone couverte pour la France métropolitaine (41–51,5° N) est complète : 30 tuiles.
-
-### Historique des fusions
-
-Deux copies existaient : `D:\Condor3\Convertisseur_carte_AE` (GUI 1.41, 7 nov.) et
-`F:\...\Convertisseur_carte_AE` (`carte_courbes.py` et `style_AE.json` du 4 nov.).
-Version retenue : GUI 1.41 + `carte_courbes.py` du 4 nov. (paramètres optionnels `texte` et `halo`
-pour `dessiner_villes`) + `style_AE.json` du 4 nov. (clé `villes`).
-
-Non récupérés : GUI 1.40 du 4 nov., son README et l'ancien `Carte_AE.exe` du 28 oct. Ils étaient
-dans ce dossier et ont été écrasés lors de la copie. Les archives `Carte-AE.rar` pourraient les
-contenir, mais ne sont lisibles qu'avec WinRAR ou 7-Zip.
+Copier ensuite `dist/Carte_AE.exe` à la racine du projet. Les fichiers `style_*.json` doivent rester à côté de l’exécutable.
