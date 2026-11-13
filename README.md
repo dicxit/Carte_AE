@@ -8,8 +8,6 @@ Programme : `Carte_AE.exe`, version **2.11** (13/11/2026)
 
 Outil Windows qui transforme les paysages **Condor 3** (`.trn` / `.raw`) en cartes BMP 32 bits : teinte d'altitude, ombrage, courbes de niveau, mer, lacs, rivières, routes, zones urbaines, noms de villes et légende « By Dicxit(AE) ».
 
-- [Tutoriel d'installation (FR)](Installation_FR.pdf) · [Installation tutorial (EN)](Installation_EN.pdf)
-
 ---
 
 ## 1. Ce qu'il vous faut
